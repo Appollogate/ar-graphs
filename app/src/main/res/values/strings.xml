@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ARDiagram</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_projects">Projects</string>
+
+    <string name="title_top_add_button">Add</string>
+    <string name="project_name_hint">Project\'s name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
