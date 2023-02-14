@@ -6,6 +6,8 @@
 
     <string name="title_top_add_button">Add</string>
     <string name="project_name_hint">Project\'s name</string>
+    <string name="file_path_hint">File\'s path</string>
+    <string name="title_file_path_button">Find file</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
