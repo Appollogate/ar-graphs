@@ -1,7 +1,6 @@
 package com.group.ardiagram.ui.projectsList
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,31 +10,31 @@ import com.group.ardiagram.R
 import com.group.ardiagram.data.Project
 import com.group.ardiagram.databinding.ProjectItemBinding
 
-class ProjectsAdapter(projectList: ArrayList<Project> = ArrayList()) :
-    RecyclerView.Adapter<ProjectsAdapter.MyViewHolder>() {
+class ProjectsAdapter(projectList: ArrayList<Project>) :
+    RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>() {
 
     private var _projectList = projectList
 
-    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ProjectsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ProjectItemBinding.bind(view)
         fun bind(project: Project) = with(binding) {
             projectName.text = project.name
             buttonChange.setOnClickListener {
                 val activity = itemView.context as FragmentActivity
-                val nameChangeDialogFragment = NameChangeDialogFragment(project)
+                val nameChangeDialogFragment = NameChangeDialogFragment.newInstance(project)
                 val manager = activity.supportFragmentManager
                 nameChangeDialogFragment.show(manager, "nameChange")
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.project_item, parent, false)
-        return MyViewHolder(view)
+        return ProjectsViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProjectsViewHolder, position: Int) {
         holder.bind(_projectList[position])
     }
 
@@ -44,7 +43,7 @@ class ProjectsAdapter(projectList: ArrayList<Project> = ArrayList()) :
     // notifyDataSetChanged() doesn't work properly
     // that is why updateUI(...) function was added
     @SuppressLint("NotifyDataSetChanged")
-    fun updateUI(projects: ArrayList<Project>) {
+    fun updateList(projects: ArrayList<Project>) {
         _projectList = projects
         notifyDataSetChanged()
     }

@@ -63,9 +63,9 @@ class ProjectCreationDialogFragment : DialogFragment() {
         return binding.projectNameEditText.text.isNotEmpty() &&
                 binding.filePathEditText.text.isNotEmpty() &&
                 // Check if project name is unique
-                !(viewModel.projectList.any {
+                viewModel.projectList.value?.any {
                     it.name == binding.projectNameEditText.text.toString()
-                })
+                } == false
     }
 
     private fun onClickFilePath() {

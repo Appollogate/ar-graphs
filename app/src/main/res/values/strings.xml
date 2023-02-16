@@ -10,4 +10,5 @@
     <string name="title_file_path_button">Find file</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_no_projects">You don\'t have any projects yet</string>
 </resources>
