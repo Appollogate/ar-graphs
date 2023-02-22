@@ -13,6 +13,7 @@ import com.google.ar.sceneform.rendering.MaterialFactory
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ShapeFactory
 import com.google.ar.sceneform.ux.ArFragment
+import com.google.ar.sceneform.ux.TransformableNode
 import com.group.ardiagram.R
 import com.group.ardiagram.databinding.FragmentScreenArBinding
 
@@ -68,15 +69,18 @@ class ARScreenFragment : Fragment() {
             .makeOpaqueWithColor(context, Color(android.graphics.Color.BLUE))
             .thenAccept {
                 val modelRenderable =
-                    ShapeFactory.makeCube(Vector3(0.1f, 0.1f, 0.1f), Vector3(0.1f, 0.1f, 0.1f), it)
+                    ShapeFactory.makeCube(Vector3(0.1f, 0.1f, 0.1f), Vector3.zero(), it)
                 placeModel(modelRenderable, anchor)
             }
     }
 
     private fun placeModel(modelRenderable: ModelRenderable, anchor: Anchor) {
         val anchorNode = AnchorNode(anchor)
-        anchorNode.renderable = modelRenderable
         arFragment.arSceneView.scene.addChild(anchorNode)
+        val transformableNode = TransformableNode(arFragment.transformationSystem);
+        anchorNode.addChild(transformableNode);
+        transformableNode.renderable = modelRenderable
+        transformableNode.select()
     }
 
     companion object {
