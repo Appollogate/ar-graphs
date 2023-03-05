@@ -1,12 +1,14 @@
 package com.group.ardiagram.ui.projectsList
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
@@ -22,16 +24,18 @@ class ProjectCreationDialogFragment : DialogFragment() {
     private var _binding: ProjectCreationDialogBinding? = null
     private val binding get() = _binding!!
 
+    private var fileUri: Uri? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        // Set file path to textView
         _launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val text = result.data?.data
-                    binding.filePathEditText.setText(text.toString())
+                    fileUri = result.data?.data
+
+                    fileUri ?: return@registerForActivityResult
+                    binding.filePathEditText.setText(context?.let { getFileName(it, fileUri!!) })
                 }
             }
         _binding = ProjectCreationDialogBinding.inflate(inflater, container, false)
@@ -50,11 +54,27 @@ class ProjectCreationDialogFragment : DialogFragment() {
         return view
     }
 
+
+    private fun getFileName(context: Context, uri: Uri): String {
+
+        if (uri.scheme == "content") {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor.use {
+                if (cursor?.moveToFirst() == true) {
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    return cursor.getString(nameIndex)
+                }
+            }
+        }
+
+        return uri.lastPathSegment.toString()
+    }
+
     private fun onClickConfirm() {
         if (isFieldsCorrect()) {
             val projectName: String = binding.projectNameEditText.text.toString()
-            val filePath: String = binding.filePathEditText.text.toString()
-            viewModel.addNewProject(projectName, filePath)
+
+            viewModel.addNewProject(projectName, fileUri)
             dialog?.cancel()
         }
     }

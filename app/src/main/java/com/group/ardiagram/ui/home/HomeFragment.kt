@@ -1,25 +1,24 @@
 package com.group.ardiagram.ui.home
 
-import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
-import android.os.Build
+import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.group.ardiagram.R
+import com.group.ardiagram.data.Project
 import com.group.ardiagram.databinding.FragmentHomeBinding
+import com.group.ardiagram.ui.projectsList.ProjectsListViewModel
 
 
-class HomeFragment : Fragment() {
+class
+HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -27,25 +26,49 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    //TODO убрать когда появится БД
+    private val projectsListViewModel: ProjectsListViewModel by activityViewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.startSessionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_ARFragment)
-
+        projectsListViewModel.projectList.observe(viewLifecycleOwner) {projects ->
+            binding.startSessionButton.setOnClickListener {
+                showListOfProjects(projects)
+            }
         }
+
         return root
     }
 
+    private fun showListOfProjects(projects: List<Project>) {
+        val builder = AlertDialog.Builder(context)
+        val projectsNames = projects.map { it.name }
 
+        if (projects.isEmpty()) {
+            builder.setTitle("You don't have any project yet")
+            builder.setPositiveButton("Ok", null)
+            val dialog = builder.create()
+            dialog.show()
+            return
+        } else {
+            builder.setTitle("Choose a project")
+        }
+
+        builder.setItems(projectsNames.toTypedArray()) { dialog, index ->
+            val bundle = bundleOf("project" to projects[index])
+            findNavController().navigate(R.id.action_navigation_home_to_ARFragment, bundle)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     override fun onCreateContextMenu(
         menu: ContextMenu,

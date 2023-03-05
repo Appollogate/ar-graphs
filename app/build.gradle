@@ -51,8 +51,14 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
 
+    //Parsing excel file
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+    implementation group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '3.1.0'
+    implementation 'javax.xml.stream:stax-api:1.0'
+    implementation 'com.fasterxml:aalto-xml:1.2.2'
+
+
     //AR dependencies
-//    implementation 'com.google.ar:core:1.35.0'
     implementation "com.gorisse.thomas.sceneform:sceneform:1.21.0"
 
     testImplementation 'junit:junit:4.13.2'

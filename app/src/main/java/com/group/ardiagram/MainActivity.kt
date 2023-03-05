@@ -1,18 +1,12 @@
 package com.group.ardiagram
 
-import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.group.ardiagram.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         
         navView.setupWithNavController(navController)
+    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
