@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.ar.core.Anchor
+import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.Color
@@ -15,6 +16,7 @@ import com.google.ar.sceneform.rendering.ShapeFactory
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import com.group.ardiagram.R
+import com.group.ardiagram.data.ScatterPlot3D
 import com.group.ardiagram.databinding.FragmentScreenArBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,29 +60,47 @@ class ARScreenFragment : Fragment() {
         arFragment = childFragmentManager.findFragmentById(R.id.arFragment) as ArFragment
 
         arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
-            placeCube(hitResult.createAnchor())
+            val anchor = hitResult.createAnchor()
+            val anchorNode = AnchorNode(anchor)
+            anchorNode.parent = arFragment.arSceneView.scene
+            val transformableNode = TransformableNode(arFragment.transformationSystem)
+            transformableNode.parent = anchorNode
+
+            // Use Node.addChild(Node!) to add a Node as a subgraph of Nodes where
+            // all the necessary renderable objects are already set.
+            // Use Node.renderable = <your renderable> to add a single Renderable to the scene.
+            placeScatterPlot3D(transformableNode)
+            //placeCube(transformableNode)
+
+            transformableNode.select()
         }
 
         return root
     }
 
-    private fun placeCube(anchor: Anchor) {
+    private fun placeCube(node: Node) {
         MaterialFactory
             .makeOpaqueWithColor(context, Color(android.graphics.Color.BLUE))
             .thenAccept {
                 val modelRenderable =
                     ShapeFactory.makeCube(Vector3(0.1f, 0.1f, 0.1f), Vector3.zero(), it)
-                placeModel(modelRenderable, anchor)
+                node.renderable = modelRenderable
             }
     }
 
-    private fun placeModel(modelRenderable: ModelRenderable, anchor: Anchor) {
-        val anchorNode = AnchorNode(anchor)
-        arFragment.arSceneView.scene.addChild(anchorNode)
-        val transformableNode = TransformableNode(arFragment.transformationSystem);
-        anchorNode.addChild(transformableNode);
-        transformableNode.renderable = modelRenderable
-        transformableNode.select()
+    private fun placeScatterPlot3D(parentNode: Node) {
+        // TODO: add list of vectors (dot coordinates) as a function parameter
+        MaterialFactory
+            .makeOpaqueWithColor(context, Color(android.graphics.Color.GREEN))
+            .thenAccept {
+                val vectorList  = listOf(
+                    Vector3.zero(),
+                    Vector3(0.02f, 0.02f, 0.0f),
+                    Vector3(0.01f, 0.05f, 0.0f)
+                )
+                val scatterPlot3D = ScatterPlot3D(vectorList, it)
+                parentNode.addChild(scatterPlot3D)
+            }
     }
 
     companion object {
