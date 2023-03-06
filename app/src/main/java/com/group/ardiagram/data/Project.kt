@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class Project(
     var name: String,
-    var pathToTableFile: String,
-    var points: List<Vector3>,
-    var labels: List<String>
+    var pathToTableFile: String = "",
+    var points: List<Vector3> = listOf(),
+    var labels: List<String> = listOf()
 ) : Serializable

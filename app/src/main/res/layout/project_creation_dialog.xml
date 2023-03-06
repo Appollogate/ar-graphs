@@ -13,50 +13,19 @@
         android:autofillHints="Name"
         android:hint="@string/project_name_hint"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:gravity="center"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/project_name_edit_text">
-
-        <EditText
-            android:id="@+id/file_path_edit_text"
-            android:layout_width="248dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:autofillHints="None"
-            android:ems="10"
-            android:hint="@string/file_path_hint"
-            android:inputType="text"
-            android:textColorHint="#6D6D6D" />
-
-        <Button
-            android:id="@+id/button_file_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:text="@string/title_file_path_button" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintEnd_toEndOf="@+id/project_name_edit_text"
+        app:layout_constraintStart_toStartOf="@+id/project_name_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/project_name_edit_text">
 
         <Button
             android:id="@+id/button_cancel"
@@ -71,11 +40,11 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/button_confirm"
+            android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Confirm" />
+            android:text="Next" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

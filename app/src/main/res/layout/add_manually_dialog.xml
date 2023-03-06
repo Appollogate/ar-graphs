@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/hint_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fill the table"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/hint_text_view"
+        app:layout_constraintStart_toStartOf="@+id/hint_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/hint_text_view">
+
+        <LinearLayout
+            android:id="@+id/table_rows"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cell_border">
+
+                <TextView
+                    android:id="@+id/x_text_view"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/x_border"
+                    android:gravity="center"
+                    android:text="X"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/y_text_view"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/y_border"
+                    android:gravity="center"
+                    android:text="Y"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/z_text_view2"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/z_border"
+                    android:gravity="center"
+                    android:text="Z"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cell_border">
+
+                <EditText
+                    android:id="@+id/textView3"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/textView4"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/textView8"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cell_border">
+
+                <EditText
+                    android:id="@+id/textView"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/textView2"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/textView9"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cell_border"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/button_add_row"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Add Row"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/button_add_row"
+        app:layout_constraintStart_toStartOf="@+id/button_add_row"
+        app:layout_constraintTop_toBottomOf="@+id/button_add_row">
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,22 +20,30 @@ import java.lang.Exception
 
 class ProjectsListViewModel(application: Application) : AndroidViewModel(application) {
     private val _projectList = MutableLiveData<ArrayList<Project>>(arrayListOf())
+    private val _points = MutableLiveData<ArrayList<Vector3>>(arrayListOf())
+
+
     val projectList: LiveData<ArrayList<Project>> get() = _projectList
+    private val pointsList: LiveData<ArrayList<Vector3>> get() = _points
 
-    fun addNewProject(projectName: String, fileUri: Uri?) {
-        val data = parseExcelFile(fileUri)
-
-        val project = Project(
-            projectName, fileUri?.path ?: "",
-            points = data.first,
-            labels = data.second
-        )
+    fun addNewProject(project: Project, fileUri: Uri? = null) {
+        if (fileUri == null) {
+            project.points = pointsList.value?.toList() ?: listOf()
+        } else {
+            val data = parseExcelFile(fileUri)
+            project.points = data.first
+            project.labels = data.second
+        }
 
         _projectList.value?.add(project)
         _projectList.notifyObserver()
 
+        Log.d("MyLog", "Project was added. Name: ${project.name}\tPath: ${project.pathToTableFile} Points: ${project.points}")
+    }
 
-        Log.d("MyLog", "Project was added. Name: ${project.name}\tPath: ${project.pathToTableFile}")
+    fun addPoint(x: Float, y: Float, z: Float) {
+        _points.value?.add(Vector3(x, y, z))
+        _points.notifyObserver()
     }
 
     fun changeProjectName(project: Project?, newName: String) {
