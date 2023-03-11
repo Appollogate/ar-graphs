@@ -44,19 +44,15 @@ class ImportChooseDialogFragment : DialogFragment() {
         val view: View = binding.root
 
         binding.buttonImportFile.setOnClickListener {
-            val activity = context as FragmentActivity
             val importChooseDialogFragment = FileImportDialogFragment.newInstance(project!!)
-            val manager = activity.supportFragmentManager
-            importChooseDialogFragment.show(manager, "fileImport")
+            importChooseDialogFragment.show(parentFragmentManager, "fileImport")
 
             dialog?.cancel()
         }
 
         binding.buttonAddManually.setOnClickListener {
-            val activity = context as FragmentActivity
             val addManuallyDialogFragment = AddManuallyDialogFragment.newInstance(project!!)
-            val manager = activity.supportFragmentManager
-            addManuallyDialogFragment.show(manager, "addManually")
+            addManuallyDialogFragment.show(parentFragmentManager, "addManually")
 
             dialog?.cancel()
         }

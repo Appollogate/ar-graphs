@@ -28,29 +28,39 @@ class ProjectsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProjectsListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        showProjects()
-
-        return root
+        return binding.root
     }
 
-    private fun showProjects() {
+    private fun setUpProjectList() {
         val recyclerView: RecyclerView = binding.projectList
+        val projectsAdapter = ProjectsAdapter(
+            onItemClicked = {
+                //TODO action
+            },
+            onEditClicked = { project ->
+                val nameChangeDialogFragment = NameChangeDialogFragment.newInstance(project)
+                nameChangeDialogFragment.show(parentFragmentManager, "nameChange")
+            },
+            onDeleteClicked = { project ->
+                viewModel.deleteProject(project)
+            })
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = projectsAdapter
+        }
 
         viewModel.projectList.observe(viewLifecycleOwner) {
 
-            binding.textNotifications.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-            (recyclerView.adapter as ProjectsAdapter).updateList(it)
-        }
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ProjectsAdapter(viewModel.projectList.value ?: arrayListOf())
+            projectsAdapter.submitList(it)
+            binding.textNotifications.visibility =
+                if (it.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {
@@ -67,6 +77,8 @@ class ProjectsListFragment : Fragment() {
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        setUpProjectList()
     }
 
     override fun onDestroyView() {
