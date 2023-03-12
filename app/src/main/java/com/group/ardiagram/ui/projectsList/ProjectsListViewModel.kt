@@ -7,24 +7,26 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.ar.sceneform.math.Vector3
+import com.group.ardiagram.App
 import com.group.ardiagram.data.Project
-import com.group.ardiagram.notifyObserver
+import kotlinx.coroutines.launch
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
 
 class ProjectsListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _projectList = MutableLiveData<ArrayList<Project>>(arrayListOf())
+    private val repository = (application as App).repository
+    private val _projectList: LiveData<List<Project>> = repository.allProjects.asLiveData()
     private val _points = MutableLiveData<ArrayList<Vector3>>(arrayListOf())
-
-
-    val projectList: LiveData<ArrayList<Project>> get() = _projectList
     private val pointsList: LiveData<ArrayList<Vector3>> get() = _points
+
+    val projectList: LiveData<List<Project>> get() = _projectList
 
     fun addNewProject(project: Project, fileUri: Uri? = null) {
         if (fileUri == null) {
@@ -35,23 +37,41 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
             project.labels = data.second
         }
 
-        _projectList.value?.add(project)
-        _projectList.notifyObserver()
+        viewModelScope.launch {
+            repository.insert(project)
+        }
 
-        Log.d("MyLog", "Project was added. Name: ${project.name}\tPath: ${project.pathToTableFile} Points: ${project.points}")
-    }
-
-    fun addPoint(x: Float, y: Float, z: Float) {
-        _points.value?.add(Vector3(x, y, z))
-        _points.notifyObserver()
+        Log.d(
+            "MyLog", "Project was added. " +
+                    "Name: ${project.name}\t" +
+                    "Path: ${project.pathToTableFile}\t" +
+                    "Points: ${project.points}"
+        )
     }
 
     fun changeProjectName(project: Project?, newName: String) {
         project ?: return
-        val index: Int = _projectList.value?.indexOf(project) ?: return
+        project.name = newName
 
-        _projectList.value?.get(index)?.name = newName
-        _projectList.notifyObserver()
+        viewModelScope.launch {
+            repository.change(project)
+        }
+    }
+
+    fun deleteProject(project: Project) {
+        viewModelScope.launch {
+            repository.delete(project)
+        }
+    }
+
+    fun addPoint(x: Float, y: Float, z: Float) {
+        _points.value?.add(Vector3(x, y, z))
+    }
+
+    fun checkNameFieldIsCorrect(name: String): Boolean {
+        return !(_projectList.value?.any { project ->
+            project.name == name
+        } ?: false) && name.isNotEmpty()
     }
 
     private fun parseExcelFile(uri: Uri?): Pair<List<Vector3>, List<String>> {

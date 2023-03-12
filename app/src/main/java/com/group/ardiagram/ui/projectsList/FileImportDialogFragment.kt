@@ -48,17 +48,17 @@ class FileImportDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         // Set file path to textView
-        _launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    fileUri = result.data?.data
+        _launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                fileUri = result.data?.data
 
-                    fileUri ?: return@registerForActivityResult
-                    binding.filePathEditText.setText(context?.let { getFileName(it, fileUri!!) })
-                }
+                fileUri ?: return@registerForActivityResult
+                binding.filePathEditText.setText(context?.let { getFileName(it, fileUri!!) })
             }
+        }
 
         project = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getSerializable(PROJECT_ITEM, Project::class.java)

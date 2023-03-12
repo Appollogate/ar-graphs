@@ -17,8 +17,7 @@ import com.group.ardiagram.databinding.FragmentHomeBinding
 import com.group.ardiagram.ui.projectsList.ProjectsListViewModel
 
 
-class
-HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -26,8 +25,7 @@ HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    //TODO убрать когда появится БД
-    private val projectsListViewModel: ProjectsListViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -38,7 +36,7 @@ HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        projectsListViewModel.projectList.observe(viewLifecycleOwner) {projects ->
+        homeViewModel.projectList.observe(viewLifecycleOwner) { projects ->
             binding.startSessionButton.setOnClickListener {
                 showListOfProjects(projects)
             }

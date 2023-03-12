@@ -1,50 +1,79 @@
 package com.group.ardiagram.ui.projectsList
 
-import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.group.ardiagram.R
 import com.group.ardiagram.data.Project
 import com.group.ardiagram.databinding.ProjectItemBinding
 
-class ProjectsAdapter(projectList: ArrayList<Project>) :
-    RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>() {
+class ProjectsAdapter(
+    private val onItemClicked: (Project) -> Unit,
+    private val onEditClicked: (Project) -> Unit,
+    private val onDeleteClicked: (Project) -> Unit
+) : ListAdapter<Project, ProjectsAdapter.ProjectsViewHolder>(DiffCallback) {
 
-    private var _projectList = projectList
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<Project>() {
+            override fun areItemsTheSame(oldItem: Project, newItem: Project): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    class ProjectsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding = ProjectItemBinding.bind(view)
+            override fun areContentsTheSame(oldItem: Project, newItem: Project): Boolean {
+                return oldItem.name == newItem.name
+            }
+        }
+    }
+
+    class ProjectsViewHolder(
+        private var binding: ProjectItemBinding,
+        val context: Context,
+        private val onEditClicked: (Project) -> Unit,
+        private val onDeleteClicked: (Project) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(project: Project) = with(binding) {
             projectName.text = project.name
+
             buttonChange.setOnClickListener {
-                val activity = itemView.context as FragmentActivity
-                val nameChangeDialogFragment = NameChangeDialogFragment.newInstance(project)
-                val manager = activity.supportFragmentManager
-                nameChangeDialogFragment.show(manager, "nameChange")
+              onEditClicked(project)
+            }
+
+            buttonDelete.setOnClickListener {
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("Are you sure you want to delete '${project.name}'?")
+                builder.setPositiveButton("Yes") { _, _ -> onDeleteClicked(project) }
+                builder.setNegativeButton("No", null)
+
+                val dialog = builder.create()
+                dialog.show()
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectsViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.project_item, parent, false)
-        return ProjectsViewHolder(view)
+        val viewHolder = ProjectsViewHolder(
+            ProjectItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ),
+            parent.context,
+            onEditClicked,
+            onDeleteClicked
+        )
+
+        viewHolder.itemView.setOnClickListener {
+            val position = viewHolder.bindingAdapterPosition
+            onItemClicked(getItem(position))
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ProjectsViewHolder, position: Int) {
-        holder.bind(_projectList[position])
-    }
-
-    override fun getItemCount(): Int = _projectList.size
-
-    // notifyDataSetChanged() doesn't work properly
-    // that is why updateUI(...) function was added
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateList(projects: ArrayList<Project>) {
-        _projectList = projects
-        notifyDataSetChanged()
+        holder.bind(getItem(position))
     }
 }

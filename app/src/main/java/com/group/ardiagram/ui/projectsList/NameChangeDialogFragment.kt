@@ -56,7 +56,8 @@ class NameChangeDialogFragment : DialogFragment() {
         }
 
         binding.buttonApplyChange.setOnClickListener {
-            viewModel.changeProjectName(project, "${binding.projectNameEditText.text}")
+            val newName = binding.projectNameEditText.text.toString()
+            viewModel.changeProjectName(project, newName)
             dialog?.cancel()
         }
 
