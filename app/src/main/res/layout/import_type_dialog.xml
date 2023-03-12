@@ -34,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Import File" />
+            android:text="Import File"
+            android:textSize="12sp" />
 
         <Space
             android:layout_width="50dp"
@@ -46,7 +47,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add Manually" />
+            android:text="Add Manually"
+            android:textSize="12sp" />
+
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button_function"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Function"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

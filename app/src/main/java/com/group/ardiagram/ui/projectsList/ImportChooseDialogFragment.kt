@@ -61,6 +61,15 @@ class ImportChooseDialogFragment : DialogFragment() {
             dialog?.cancel()
         }
 
+        binding.buttonFunction.setOnClickListener {
+            val activity = context as FragmentActivity
+            val addManuallyDialogFragment = FunctionDialogFragment.newInstance(project!!)
+            val manager = activity.supportFragmentManager
+            addManuallyDialogFragment.show(manager, "addManually")
+
+            dialog?.cancel()
+        }
+
         binding.buttonCancel.setOnClickListener {
             dialog?.cancel()
         }
