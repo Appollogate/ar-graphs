@@ -23,6 +23,6 @@
     <fragment
         android:id="@+id/ARFragment"
         android:name="com.group.ardiagram.ui.ar.ARScreenFragment"
-        android:label="fragment_ar"
+        android:label="AR"
         tools:layout="@layout/fragment_screen_ar" />
 </navigation>

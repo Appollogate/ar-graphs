@@ -10,11 +10,5 @@
         android:layout_height="match_parent"
         android:id="@+id/arFragment"
         android:name="com.google.ar.sceneform.ux.ArFragment"/>
-    
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/createCubeButton"
-        android:text="Create cube"/>
 
 </RelativeLayout>

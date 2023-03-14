@@ -1,6 +1,8 @@
 package com.group.ardiagram.data
 
+import android.content.Context
 import com.google.ar.sceneform.math.Vector3
+import java.io.File
 
 class Graph3D(
     function: String,
