@@ -2,7 +2,6 @@ package com.group.ardiagram.ui.projectsList
 
 import android.app.Application
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -28,25 +27,60 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
 
     val projectList: LiveData<List<Project>> get() = _projectList
 
-    fun addNewProject(project: Project, fileUri: Uri? = null) {
-        if (fileUri == null) {
-            project.points = pointsList.value?.toList() ?: listOf()
-        } else {
-            val data = parseExcelFile(fileUri)
-            project.points = data.first
-            project.labels = data.second
-        }
+    fun applyManuallyImportProjectData(project: Project?) {
+        project ?: return
+
+        val isNewProject = project.isNew()
+        project.resetAllInputs()
+
+        val points = pointsList.value?.toList() ?: listOf()
 
         viewModelScope.launch {
-            repository.insert(project)
+            if (isNewProject) {
+                project.points = points
+                repository.insert(project)
+            } else {
+                project.resetAllInputs()
+                project.points = points
+                repository.change(project)
+            }
         }
+    }
 
-        Log.d(
-            "MyLog", "Project was added. " +
-                    "Name: ${project.name}\t" +
-                    "Path: ${project.pathToTableFile}\t" +
-                    "Points: ${project.points}"
-        )
+    fun applyImportProjectData(project: Project?, fileUri: Uri?) {
+        project ?: return
+
+        val isNewProject = project.isNew()
+        project.resetAllInputs()
+
+        val (points, labels) = parseExcelFile(fileUri)
+        project.points = points
+        project.labels = labels
+
+        viewModelScope.launch {
+            if (isNewProject) {
+                repository.insert(project)
+            } else {
+                repository.change(project)
+            }
+        }
+    }
+
+    fun applyProjectFunction(project: Project?, function: String) {
+        project ?: return
+
+        val isNewProject = project.isNew()
+        project.resetAllInputs()
+
+        project.function = function
+
+        viewModelScope.launch {
+            if (isNewProject) {
+                repository.insert(project)
+            } else {
+                repository.change(project)
+            }
+        }
     }
 
     fun changeProjectName(project: Project?, newName: String) {
@@ -121,7 +155,7 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
                 Toast.LENGTH_LONG
             ).show()
         }
-        return Pair(listOfPoints, listOfLabels)
+        return listOfPoints to listOfLabels
     }
 
     private fun getWorkbook(inputStream: InputStream?): Workbook? {

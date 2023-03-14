@@ -30,6 +30,7 @@ class FileImportDialogFragment : DialogFragment() {
 
     companion object {
         const val PROJECT_ITEM = "projectItem"
+
         @JvmStatic
         fun newInstance(project: Project) =
             FileImportDialogFragment().apply {
@@ -105,13 +106,13 @@ class FileImportDialogFragment : DialogFragment() {
         }
         _launcher?.launch(intent)
     }
-    
+
     private fun onClickConfirm() {
         val path = binding.filePathEditText.toString()
-        if(path.isNotEmpty()){
+        if (path.isNotEmpty()) {
             project?.pathToTableFile = path
 
-            project?.let { viewModel.addNewProject(it, fileUri) }
+            viewModel.applyImportProjectData(project, fileUri)
 
             dialog?.cancel()
         }

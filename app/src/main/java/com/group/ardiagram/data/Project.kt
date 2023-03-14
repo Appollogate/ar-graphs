@@ -12,9 +12,20 @@ data class Project(
     var name: String,
     var pathToTableFile: String = "",
     var points: List<Vector3> = listOf(),
-    var labels: List<String> = listOf()
+    var labels: List<String> = listOf(),
+    var function: String? = null
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 123
+    }
+
+    fun resetAllInputs() {
+        pathToTableFile = ""
+        points = listOf()
+        function = null
+    }
+
+    fun isNew(): Boolean {
+        return pathToTableFile.isEmpty() && points.isEmpty() && function == null
     }
 }

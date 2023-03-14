@@ -38,8 +38,8 @@ class ProjectsListFragment : Fragment() {
                 //TODO action
             },
             onEditClicked = { project ->
-                val nameChangeDialogFragment = NameChangeDialogFragment.newInstance(project)
-                nameChangeDialogFragment.show(parentFragmentManager, "nameChange")
+                val projectParamsChangeDialogFragment = ProjectParamsChangeDialogFragment.newInstance(project)
+                projectParamsChangeDialogFragment.show(parentFragmentManager, "nameChange")
             },
             onDeleteClicked = { project ->
                 viewModel.deleteProject(project)

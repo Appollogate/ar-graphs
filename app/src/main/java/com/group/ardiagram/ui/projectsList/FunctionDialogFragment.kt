@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.group.ardiagram.data.Project
-import com.group.ardiagram.databinding.AddManuallyDialogBinding
 import com.group.ardiagram.databinding.FunctionDialogBinding
 
 class FunctionDialogFragment: DialogFragment() {
@@ -52,7 +51,9 @@ class FunctionDialogFragment: DialogFragment() {
         }
 
         binding.buttonConfirm.setOnClickListener {
-            // function
+            val function = binding.functionEditText.text.toString()
+
+            viewModel.applyProjectFunction(project, function)
 
             dialog?.cancel()
         }

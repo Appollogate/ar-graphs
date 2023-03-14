@@ -62,28 +62,30 @@ class AddManuallyDialogFragment : DialogFragment() {
         }
 
         binding.buttonConfirm.setOnClickListener {
-
-            val rowCount = binding.tableRows.childCount - 1
-            for (i in 1..rowCount){
-                val row = binding.tableRows.getChildAt(i) as TableRow
-                val xStr = (row.getChildAt(0) as TextView).text.toString()
-                val yStr = (row.getChildAt(1) as TextView).text.toString()
-                val zStr = (row.getChildAt(2) as TextView).text.toString()
-
-                if (xStr.isEmpty() && yStr.isEmpty() && zStr.isEmpty()) continue
-
-                val x = if (xStr.isEmpty()) 0.0f else xStr.toFloat()
-                val y = if (yStr.isEmpty()) 0.0f else yStr.toFloat()
-                val z = if (zStr.isEmpty()) 0.0f else zStr.toFloat()
-
-                viewModel.addPoint(x, y, z)
-            }
-
-            project?.let { newProject -> viewModel.addNewProject(newProject) }
-
+            addPointsToViewModel()
+            viewModel.applyManuallyImportProjectData(project)
             dialog?.cancel()
         }
 
         return view
+    }
+
+    private fun addPointsToViewModel() {
+        val rowCount = binding.tableRows.childCount - 1
+
+        for (i in 1..rowCount){
+            val row = binding.tableRows.getChildAt(i) as TableRow
+            val xStr = (row.getChildAt(0) as TextView).text.toString()
+            val yStr = (row.getChildAt(1) as TextView).text.toString()
+            val zStr = (row.getChildAt(2) as TextView).text.toString()
+
+            if (xStr.isEmpty() && yStr.isEmpty() && zStr.isEmpty()) continue
+
+            val x = if (xStr.isEmpty()) 0.0f else xStr.toFloat()
+            val y = if (yStr.isEmpty()) 0.0f else yStr.toFloat()
+            val z = if (zStr.isEmpty()) 0.0f else zStr.toFloat()
+
+            viewModel.addPoint(x, y, z)
+        }
     }
 }

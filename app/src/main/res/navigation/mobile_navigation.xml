@@ -16,12 +16,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.group.ardiagram.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
         android:id="@+id/navigation_projects_list"
         android:name="com.group.ardiagram.ui.projectsList.ProjectsListFragment"
         android:label="@string/title_projects"

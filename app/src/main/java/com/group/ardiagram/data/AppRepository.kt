@@ -10,11 +10,13 @@ class AppRepository(private val projectDAO: ProjectDAO) {
 
     @WorkerThread
     suspend fun insert(project: Project) {
+        Log.d("MyLog", "Project was added. $project")
         projectDAO.insert(project)
     }
 
     @WorkerThread
     suspend fun change(project: Project) {
+        Log.d("MyLog", "Project was updated. $project")
         projectDAO.update(project)
     }
 

@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.group.ardiagram.data.Project
-import com.group.ardiagram.databinding.NameChangeDialogBinding
+import com.group.ardiagram.databinding.ProjectParamsChangeDialogBinding
 
-class NameChangeDialogFragment : DialogFragment() {
+class ProjectParamsChangeDialogFragment : DialogFragment() {
 
     companion object {
         const val PROJECT_ITEM = "projectItem"
+
         @JvmStatic
         fun newInstance(project: Project) =
-            NameChangeDialogFragment().apply {
+            ProjectParamsChangeDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PROJECT_ITEM, project)
                 }
@@ -37,7 +38,7 @@ class NameChangeDialogFragment : DialogFragment() {
 
     private val viewModel: ProjectsListViewModel by activityViewModels()
 
-    private var _binding: NameChangeDialogBinding? = null
+    private var _binding: ProjectParamsChangeDialogBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -46,21 +47,50 @@ class NameChangeDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = NameChangeDialogBinding.inflate(inflater, container, false)
+        _binding = ProjectParamsChangeDialogBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
         binding.projectNameEditText.setText(project?.name.orEmpty())
+
+        val inputText = when {
+            project?.function != null -> project?.function
+            project?.points != null && project?.pathToTableFile?.isNotEmpty() ?: false -> "Points from ${
+                project?.pathToTableFile?.split(
+                    "/"
+                )?.last()
+            }"
+
+            else -> "Manual points"
+        }
+
+        binding.inputText.text = inputText
 
         binding.buttonCancel.setOnClickListener {
             dialog?.cancel()
         }
 
+       bindButtons()
+
+        return view
+    }
+
+
+    private fun bindButtons() {
         binding.buttonApplyChange.setOnClickListener {
             val newName = binding.projectNameEditText.text.toString()
             viewModel.changeProjectName(project, newName)
             dialog?.cancel()
         }
 
-        return view
+        binding.buttonChangeInput.setOnClickListener {
+            val importChooseDialogFragment = project?.let { it1 ->
+                ImportChooseDialogFragment.newInstance(
+                    it1
+                )
+            }
+            importChooseDialogFragment?.show(parentFragmentManager, "importChoose")
+
+            dialog?.cancel()
+        }
     }
 }
