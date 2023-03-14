@@ -35,6 +35,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'lwjgl32.dll.sha1'
+        exclude 'lwjgl.dll.sha1'
+    }
 }
 
 dependencies {
@@ -61,6 +66,11 @@ dependencies {
 
     //AR dependencies
     implementation "com.gorisse.thomas.sceneform:sceneform:1.21.0"
+
+    //3D graph generation
+    implementation("org.mariuszgromada.math:MathParser.org-mXparser:5.2.1")
+    implementation("de.javagl:obj:0.4.0")
+    implementation("com.aspose:aspose-3d:23.2")
 
     //room dependencies
     implementation("androidx.room:room-runtime:2.5.0")
