@@ -108,11 +108,10 @@ class FileImportDialogFragment : DialogFragment() {
     }
 
     private fun onClickConfirm() {
-        val path = binding.filePathEditText.toString()
+        val path = binding.filePathEditText.text.toString()
         if (path.isNotEmpty()) {
-            project?.pathToTableFile = path
 
-            viewModel.applyImportProjectData(project, fileUri)
+            viewModel.applyImportProjectData(project, fileUri, path)
 
             dialog?.cancel()
         }

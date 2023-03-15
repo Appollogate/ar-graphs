@@ -47,7 +47,7 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun applyImportProjectData(project: Project?, fileUri: Uri?) {
+    fun applyImportProjectData(project: Project?, fileUri: Uri?, path: String) {
         project ?: return
 
         val isNewProject = project.isNew()
@@ -56,6 +56,7 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
         val (points, labels) = parseExcelFile(fileUri)
         project.points = points
         project.labels = labels
+        project.pathToTableFile = path
 
         viewModelScope.launch {
             if (isNewProject) {
