@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.group.ardiagram.data.Project
 import com.group.ardiagram.databinding.FunctionDialogBinding
 
-class FunctionDialogFragment: DialogFragment() {
+class FunctionDialogFragment : DialogFragment() {
 
     private val viewModel: ProjectsListViewModel by activityViewModels()
 
@@ -19,6 +19,7 @@ class FunctionDialogFragment: DialogFragment() {
 
     companion object {
         const val PROJECT_ITEM = "projectItem"
+
         @JvmStatic
         fun newInstance(project: Project) =
             FunctionDialogFragment().apply {
@@ -53,9 +54,31 @@ class FunctionDialogFragment: DialogFragment() {
         binding.buttonConfirm.setOnClickListener {
             val function = binding.functionEditText.text.toString()
 
-            viewModel.applyProjectFunction(project, function)
+            val xMin = binding.xLowEditText.text.toString().toFloat();
+            val xMax = binding.xHighEditText.text.toString().toFloat();
 
-            dialog?.cancel()
+            val yMin = binding.yLowEditText.text.toString().toFloat();
+            val yMax = binding.yHighEditText.text.toString().toFloat();
+
+            val zMin = binding.zLowEditText.text.toString().toFloat();
+            val zMax = binding.zHighEditText.text.toString().toFloat();
+
+            if (xMin <= xMax && yMin <= yMax && zMin <= zMax) {
+
+                val xScope: List<Float> = listOf(xMin, xMax)
+                val yScope: List<Float> = listOf(yMin, yMax)
+                val zScope: List<Float> = listOf(zMin, zMax)
+
+                viewModel.applyProjectFunction(
+                    project,
+                    function,
+                    xScope,
+                    yScope,
+                    zScope
+                )
+
+                dialog?.cancel()
+            }
         }
 
         return view

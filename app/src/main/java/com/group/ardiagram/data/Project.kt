@@ -13,7 +13,10 @@ data class Project(
     var pathToTableFile: String = "",
     var points: List<Vector3> = listOf(),
     var labels: List<String> = listOf(),
-    var function: String? = null
+    var function: String? = null,
+//    var xScope: List<Float> = listOf(),
+//    var yScope: List<Float> = listOf(),
+//    var zScope: List<Float> = listOf()
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 123

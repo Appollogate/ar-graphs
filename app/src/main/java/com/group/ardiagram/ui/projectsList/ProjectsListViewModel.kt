@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.aspose.threed.Vector2
 import com.google.ar.sceneform.math.Vector3
 import com.group.ardiagram.App
 import com.group.ardiagram.data.Project
@@ -67,13 +68,22 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun applyProjectFunction(project: Project?, function: String) {
+    fun applyProjectFunction(
+        project: Project?,
+        function: String,
+        xScope: List<Float>,
+        yScope: List<Float>,
+        zScope: List<Float>
+    ) {
         project ?: return
 
         val isNewProject = project.isNew()
         project.resetAllInputs()
 
         project.function = function
+//        project.xScope = xScope
+//        project.yScope = yScope
+//        project.zScope = zScope
 
         viewModelScope.launch {
             if (isNewProject) {
