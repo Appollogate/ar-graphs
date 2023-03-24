@@ -71,9 +71,9 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
     fun applyProjectFunction(
         project: Project?,
         function: String,
-        xScope: List<Float>,
-        yScope: List<Float>,
-        zScope: List<Float>
+        xMin: Float, xMax: Float,
+        yMin: Float, yMax: Float,
+        zMin: Float, zMax: Float
     ) {
         project ?: return
 
@@ -81,9 +81,12 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
         project.resetAllInputs()
 
         project.function = function
-//        project.xScope = xScope
-//        project.yScope = yScope
-//        project.zScope = zScope
+//        project.xMin = xMin
+//        project.xMax = xMax
+//        project.yMin = yMin
+//        project.yMax = yMax
+//        project.zMin = zMin
+//        project.zMax = zMax
 
         viewModelScope.launch {
             if (isNewProject) {

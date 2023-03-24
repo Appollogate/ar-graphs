@@ -65,16 +65,12 @@ class FunctionDialogFragment : DialogFragment() {
 
             if (xMin <= xMax && yMin <= yMax && zMin <= zMax) {
 
-                val xScope: List<Float> = listOf(xMin, xMax)
-                val yScope: List<Float> = listOf(yMin, yMax)
-                val zScope: List<Float> = listOf(zMin, zMax)
-
                 viewModel.applyProjectFunction(
                     project,
                     function,
-                    xScope,
-                    yScope,
-                    zScope
+                    xMin, xMax,
+                    yMin, yMax,
+                    zMin, zMax
                 )
 
                 dialog?.cancel()
