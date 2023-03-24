@@ -14,12 +14,12 @@ data class Project(
     var points: List<Vector3> = listOf(),
     var labels: List<String> = listOf(),
     var function: String? = null,
-//    var xMin: Float,
-//    var xMax: Float,
-//    var yMin: Float,
-//    var yMax: Float,
-//    var zMin: Float,
-//    var zMax: Float
+    var xMin: Float = -10f,
+    var xMax: Float = 10f,
+    var yMin: Float = -10f,
+    var yMax: Float = 10f,
+    var zMin: Float = -10f,
+    var zMax: Float = 10f
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 123

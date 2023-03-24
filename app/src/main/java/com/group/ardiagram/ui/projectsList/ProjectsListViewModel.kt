@@ -81,12 +81,12 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
         project.resetAllInputs()
 
         project.function = function
-//        project.xMin = xMin
-//        project.xMax = xMax
-//        project.yMin = yMin
-//        project.yMax = yMax
-//        project.zMin = zMin
-//        project.zMax = zMax
+        project.xMin = xMin
+        project.xMax = xMax
+        project.yMin = yMin
+        project.yMax = yMax
+        project.zMin = zMin
+        project.zMax = zMax
 
         viewModelScope.launch {
             if (isNewProject) {
