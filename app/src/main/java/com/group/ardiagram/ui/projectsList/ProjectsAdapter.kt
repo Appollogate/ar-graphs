@@ -2,6 +2,7 @@ package com.group.ardiagram.ui.projectsList
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,7 +14,8 @@ import com.group.ardiagram.databinding.ProjectItemBinding
 class ProjectsAdapter(
     private val onItemClicked: (Project) -> Unit,
     private val onEditClicked: (Project) -> Unit,
-    private val onDeleteClicked: (Project) -> Unit
+    private val onDeleteClicked: (Project) -> Unit,
+    private val onShareClicked: (Project) -> Unit
 ) : ListAdapter<Project, ProjectsAdapter.ProjectsViewHolder>(DiffCallback) {
 
     companion object {
@@ -32,10 +34,21 @@ class ProjectsAdapter(
         private var binding: ProjectItemBinding,
         val context: Context,
         private val onEditClicked: (Project) -> Unit,
-        private val onDeleteClicked: (Project) -> Unit
+        private val onDeleteClicked: (Project) -> Unit,
+        private val onShareClicked: (Project) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(project: Project) = with(binding) {
             projectName.text = project.name
+            projectDescription.text = "Source: " + when {
+                project.function != null -> project.function
+                project.pathToTableFile.isNotEmpty() -> "Points from ${
+                    project.pathToTableFile.split(
+                        "/"
+                    ).last()
+                }"
+
+                else -> "Manual points"
+            }
 
             buttonChange.setOnClickListener {
               onEditClicked(project)
@@ -50,6 +63,10 @@ class ProjectsAdapter(
                 val dialog = builder.create()
                 dialog.show()
             }
+
+            buttonShare.setOnClickListener {
+                onShareClicked(project)
+            }
         }
     }
 
@@ -62,7 +79,8 @@ class ProjectsAdapter(
             ),
             parent.context,
             onEditClicked,
-            onDeleteClicked
+            onDeleteClicked,
+            onShareClicked
         )
 
         viewHolder.itemView.setOnClickListener {

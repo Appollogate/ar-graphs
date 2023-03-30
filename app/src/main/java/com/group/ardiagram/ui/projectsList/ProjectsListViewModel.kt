@@ -27,6 +27,7 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
     private val pointsList: LiveData<ArrayList<Vector3>> get() = _points
 
     val projectList: LiveData<List<Project>> get() = _projectList
+    var jsonProject: String? = null
 
     fun applyManuallyImportProjectData(project: Project?) {
         project ?: return
@@ -94,6 +95,12 @@ class ProjectsListViewModel(application: Application) : AndroidViewModel(applica
             } else {
                 repository.change(project)
             }
+        }
+    }
+
+    fun saveProject(project: Project) {
+        viewModelScope.launch {
+            repository.insert(project)
         }
     }
 

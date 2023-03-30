@@ -12,4 +12,6 @@
     <string name="hint_no_projects">You don\'t have any projects yet</string>
     <string name="cancelText">Cancel</string>
     <string name="confirmButtonText">Confirm</string>
+    <string name="option_menu_create_new">Create new</string>
+    <string name="option_menu_open">Open</string>
 </resources>
