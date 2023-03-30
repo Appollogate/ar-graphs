@@ -80,10 +80,10 @@ class ARScreenFragment : Fragment() {
 
             if (project?.function != null) {
                 placeGraph3D(transformableNode)
-                transformableNode.select()
             } else {
                 placeScatterPlot3D(transformableNode, project?.points ?: listOf())
             }
+            placeArrows(transformableNode)
             transformableNode.select()
         }
 
@@ -97,9 +97,12 @@ class ARScreenFragment : Fragment() {
 
         val graph3D = Graph3D(
             function,
-            -10.0f, 10.0f,
-            -10.0f, 10.0f,
-            0.0f, 0.0f
+            project?.xMin ?: -10.0f,
+            project?.xMax ?: 10.0f,
+            project?.yMin ?: -10.0f,
+            project?.yMax ?: 10.0f,
+            project?.zMin ?: -10.0f,
+            project?.zMax ?: 10.0f
         )
 
         val pathFileOutPutObj = File.createTempFile("tempObj", ".obj", context?.cacheDir).path
@@ -121,7 +124,6 @@ class ARScreenFragment : Fragment() {
 
     private fun placeScatterPlot3D(parentNode: Node, listOfPoints: List<Vector3>) {
         Toast.makeText(context, "Show plot: $listOfPoints", Toast.LENGTH_SHORT).show()
-
         MaterialFactory
             .makeOpaqueWithColor(context, Color(android.graphics.Color.RED))
             .thenAccept {
@@ -133,8 +135,28 @@ class ARScreenFragment : Fragment() {
     private fun placeGraph3D(parentNode: Node) {
         val otherNode = Node()
         otherNode.parent = parentNode
-        // the model is usually quite large so it's scaled down (temporary fix)
+        // TODO: fix magic number scaling
         otherNode.localScale = Vector3(0.01f, 0.01f, 0.01f)
         otherNode.renderable = graphModel
+    }
+
+    private fun placeArrows(parentNode: Node) {
+        addArrow(parentNode, "RedXArrow.glb")
+        addArrow(parentNode, "GreenYArrow.glb")
+        addArrow(parentNode, "BlueZArrow.glb")
+    }
+
+    private fun addArrow(parentNode: Node, modelPath: String) {
+        val arrow = Node()
+        arrow.parent = parentNode
+        ModelRenderable.builder()
+            .setSource(context, Uri.parse(modelPath))
+            .setIsFilamentGltf(true)
+            .build()
+            .thenAccept { renderable ->
+                arrow.renderable = renderable
+            }
+        // TODO: fix magic number scaling
+        arrow.localScale = Vector3(0.05f, 0.05f, 0.05f)
     }
 }
