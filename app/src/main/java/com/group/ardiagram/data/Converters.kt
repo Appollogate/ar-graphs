@@ -21,9 +21,9 @@ class Converters {
         return list.map {
             val xyz = it.split(",")
             try {
-                val x: Float = xyz[0].removePrefix("[x=").toFloatOrNull() ?: 0f
+                val x: Float = xyz[0].removePrefix("[").removePrefix("x=").toFloatOrNull() ?: 0f
                 val y: Float = xyz[1].removePrefix(" y=").toFloatOrNull() ?: 0f
-                val z: Float = xyz[2].removePrefix(" z=").removePrefix("]").toFloatOrNull() ?: 0f
+                val z: Float = xyz[2].removePrefix(" z=").removeSuffix("]").toFloatOrNull() ?: 0f
                 Vector3(x, y, z)
             } catch (e: Exception) {
                 Log.e("Converter Error", "$e")
